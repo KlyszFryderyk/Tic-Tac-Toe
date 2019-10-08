@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Segment } from 'semantic-ui-react'
 // import styles from './App.module.scss';
 import { BrowserRouter as Router, Route, Switch, NavLink } from "react-router-dom";
-import TicTacToe from './Components/TicTacToe';
+import TicTacToe from './Components/TicTacToe/TicTacToe';
 import History from './Components/History';
 import Message from './Components/Message';
 

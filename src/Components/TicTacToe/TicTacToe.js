@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import styles from "./TicTacToe.module.scss"
 
-
 class TicTacToe extends Component {
 
     state = {
@@ -9,7 +8,7 @@ class TicTacToe extends Component {
         player: "X",
         winner: null
     }
-    CheckWinner() {
+    CheckWinner = () => {
         let WinOptions =
             [
                 ["0", "1", "2"],
@@ -31,9 +30,49 @@ class TicTacToe extends Component {
                 }, () => { console.log("You won"); })
             }
         }
+        localStorage.setItem("board", JSON.stringify(this.state.board));
+        localStorage.setItem("winner", JSON.stringify(this.state.winner));
     }
 
-    RulesOfGame(index) {
+    componentDidUpdate() {
+        localStorage.setItem("board", JSON.stringify(this.state.board));
+        localStorage.setItem("winner", JSON.stringify(this.state.winner));
+    }
+    componentDidMount() {
+        let board = localStorage.getItem('board');
+        let winner = localStorage.getItem('winner');
+        if (board === null) {
+        } else {
+            let board = localStorage.getItem('board');
+            board = JSON.parse(board);
+            this.setState({ board });
+        }
+        if (winner === null) {
+        } else {
+            let winner = localStorage.getItem('winner');
+            winner = JSON.parse(winner);
+            this.setState({ winner });
+        }
+    }
+
+    handleOptionChange = (changeEvent) => {
+        this.setState({
+            player: changeEvent.target.value
+        });
+    }
+
+    WhoFirst = (event) => {
+        event.preventDefault();
+        this.setState({
+            board: Array(9).fill(null),
+            winner: null
+        });
+
+
+        localStorage.setItem("board", JSON.stringify(this.state.board));
+    }
+
+    RulesOfGame = (index) => {
         if (this.state.player && !this.state.winner) {
             let newBoard = this.state.board
             if (this.state.board[index] === null) {
@@ -47,7 +86,7 @@ class TicTacToe extends Component {
     }
 
     render() {
-        const Button = this.state.board.map((button, index) =>
+        const Buton = this.state.board.map((button, index) =>
             <button
                 key={index}
                 value={index}
@@ -65,20 +104,28 @@ class TicTacToe extends Component {
                     <input
                             type="radio"
                             name="player"
-                            value="X" />
+                            value="X"
+                            checked={this.state.player === "X"}
+                            onChange={this.handleOptionChange}
+                        />
                     </label>
                     <label>
                         Player O
                     <input
                             type="radio"
                             name="player"
-                            value="O" />
+                            value="O"
+                            checked={this.state.player === "O"}
+                            onChange={this.handleOptionChange}
+                        />
                     </label>
                     <input
+
+                        onClick={(event) => this.WhoFirst(event)}
                         type="submit"
-                        value="Start" />
+                        value="Reset" />
                 </form>
-                <div className={styles.gameBoard}> {Button} </div>
+                <div className={styles.gameBoard}> {Buton} </div>
             </div>
         )
     }
